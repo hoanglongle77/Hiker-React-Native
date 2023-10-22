@@ -1,6 +1,7 @@
 import React, { useMemo, useState } from "react";
 
 import {
+  Alert,
   View,
   Text,
   TextInput,
@@ -14,12 +15,33 @@ import DateTimePicker from "@react-native-community/datetimepicker";
 import { AddScreenStyles } from "./AddStyles";
 import { strings } from "../../resources/strings";
 
-const AddScreen = () => {
-  const [inputValue, setInputValue] = useState();
-  const [selectedPark, setSelectedPark] = useState();
-  const [selectedLevel, setSelectedLevel] = useState();
+import Database from "../../database/Database";
 
+const AddScreen = ({ navigation }) => {
+  const [inputName, setInputName] = useState("");
+  const [inputLocation, setInputLocation] = useState("");
   const [date, setDate] = useState(new Date(1598051730000));
+  const [selectedPark, setSelectedPark] = useState("");
+  const [inputLength, setInputLength] = useState("");
+  const [selectedLevel, setSelectedLevel] = useState("");
+  const [inputDescription, setInputDescription] = useState("");
+
+  const radioButtons = useMemo(
+    () => [
+      {
+        id: "1", // acts as primary key, should be unique and non-empty string
+        label: "Yes",
+        value: "Yes",
+      },
+      {
+        id: "2",
+        label: "No",
+        value: "No",
+      },
+    ],
+    []
+  );
+
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
 
@@ -39,27 +61,46 @@ const AddScreen = () => {
   };
 
   //Method to reset add field
-  const resetAllFields = () => {
-    setInputValue(""); // Reset the input value to an empty string
+  // const resetAllFields = () => {
+  //   setInputName(""); // Reset the input value to an empty string
+  //   setInputLocation(""); // Reset other input fields as well
+  //   setDate(new Date(1598051730000));
+  //   setSelectedPark("");
+  //   setInputLength("");
+  //   setSelectedLevel("");
+  //   setInputDescription("");
+  // };
+  //Method to add hike
+  const handleAddNewHike = async () => {
+    await Database.insertHike(
+      inputName.toString(),
+      inputLocation.toString(),
+      date.toString(),
+      selectedPark.toString(),
+      inputLength.toString(),
+      selectedLevel.toString(),
+      inputDescription.toString()
+    )
+      .then(() => {
+        console.log("Hike added successfully");
+        navigation.navigate("Details"); // Navigate back to the previous screen
+      })
+      .catch((error) => {
+        console.error("Error adding hike:", error);
+      });
   };
 
-  //Method to add hike
-
-  const radioButtons = useMemo(
-    () => [
-      {
-        id: "1", // acts as primary key, should be unique and non-empty string
-        label: "Yes",
-        value: "Yes",
-      },
-      {
-        id: "2",
-        label: "No",
-        value: "No",
-      },
-    ],
-    []
-  );
+  // const handleTest = () => {
+  //   console.log(
+  //     inputName,
+  //     inputLocation,
+  //     date,
+  //     selectedPark,
+  //     inputLength,
+  //     selectedLevel,
+  //     inputDescription
+  //   );
+  // };
 
   return (
     <ScrollView automaticallyAdjustKeyboardInsets={true}>
@@ -69,8 +110,8 @@ const AddScreen = () => {
           <TextInput
             style={AddScreenStyles.NLDDInput}
             placeholder={strings.name_hint}
-            value={inputValue}
-            onChangeText={(text) => setInputValue(text)}
+            onChangeText={setInputName}
+            value={inputName}
           />
         </View>
 
@@ -81,6 +122,8 @@ const AddScreen = () => {
           <TextInput
             style={AddScreenStyles.NLDDInput}
             placeholder={strings.location_hint}
+            onChangeText={setInputLocation}
+            value={inputLocation}
           />
         </View>
 
@@ -96,6 +139,7 @@ const AddScreen = () => {
           <TextInput
             style={AddScreenStyles.NLDDInput}
             value={date.toLocaleDateString()}
+            onChangeText={setDate}
             editable={false}
           />
           {show && (
@@ -103,7 +147,6 @@ const AddScreen = () => {
               testID="dateTimePicker"
               value={date}
               mode={mode}
-              is24Hour={true}
               onChange={onChange}
             />
           )}
@@ -125,6 +168,8 @@ const AddScreen = () => {
             style={AddScreenStyles.lengthInput}
             placeholder={strings.length_hint}
             keyboardType="numeric"
+            onChangeText={setInputLength}
+            value={inputLength}
           />
         </View>
 
@@ -154,17 +199,19 @@ const AddScreen = () => {
             placeholder={strings.description_hint}
             multiline={true}
             numberOfLines={8}
+            onChangeText={setInputDescription}
+            value={inputDescription}
           />
         </View>
 
         <View style={AddScreenStyles.buttonGroup}>
-          <TouchableOpacity style={AddScreenStyles.addButton}>
+          <TouchableOpacity
+            style={AddScreenStyles.addButton}
+            onPress={handleAddNewHike}
+          >
             <Text style={AddScreenStyles.addTitle}>{strings.button_add}</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            style={AddScreenStyles.resetButton}
-            onPress={resetAllFields}
-          >
+          <TouchableOpacity style={AddScreenStyles.resetButton}>
             <Text style={AddScreenStyles.resetTitle}>
               {strings.button_reset}
             </Text>
