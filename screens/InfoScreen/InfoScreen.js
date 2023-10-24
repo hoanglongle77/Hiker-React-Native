@@ -1,64 +1,94 @@
 import React, { useEffect, useState } from "react";
 import { useIsFocused } from "@react-navigation/native";
-import { View, Text, FlatList, TouchableOpacity } from "react-native"; // Added StyleSheet for styling
+import {
+  View,
+  Text,
+  FlatList,
+  TouchableOpacity,
+  ImageBackground,
+  SafeAreaView,
+} from "react-native"; // Added StyleSheet for styling
 import Database from "../../database/Database";
+import { InfoScreenStyles } from "./InfoStyles";
 
-const InfoScreen = () => {
+const InfoScreen = ({ navigation }) => {
+  const image = {
+    uri: "https://img.freepik.com/premium-vector/hiking-mountain-background_608812-428.jpg",
+  };
   const [hikes, setHikes] = useState([]);
   const isFocused = useIsFocused();
   const [longPressedItemId, setLongPressedItemId] = useState(null);
 
-  // Fetch data
+  // 1 - Fetch data
   useEffect(() => {
     const fetchHikes = async () => {
       try {
         const hikeList = await Database.getAllHikes();
         setHikes(hikeList);
       } catch (error) {
-        console.error("Error fetching hikes:", error);
+        Alert.alert("Error fetching hikes:", error);
       }
     };
 
     fetchHikes();
   }, [isFocused]);
 
-  // Method to delete hike
+  // 2 - Method to delete hike
   const handleDeleteHike = async (id) => {
     await Database.deleteHike(id);
     const data = await Database.getAllHikes();
     setHikes(data);
   };
 
+  // 3 - Generate image from OpenAI
+
   const renderHikeCard = ({ item }) => (
     <TouchableOpacity
+      style={InfoScreenStyles.hikeCard}
       onLongPress={() => setLongPressedItemId(item.id)}
       onPress={() => setLongPressedItemId(null)} // Clear long press state on regular press
     >
-      <View>
-        <Text>Name: {item.name}</Text>
-        <Text>Location: {item.location}</Text>
-        <Text>Date: {item.date}</Text>
-        <Text>Parking: {item.parking}</Text>
-        <Text>Length: {item.length}</Text>
-        <Text>Difficulty: {item.difficulty}</Text>
-        <Text>Description: {item.description}</Text>
+      <ImageBackground
+        source={image}
+        resizeMode="cover"
+        style={InfoScreenStyles.image}
+      >
+        <View style={InfoScreenStyles.infoContainter}>
+          <Text style={InfoScreenStyles.text}>Trip: {item.name}</Text>
+          <Text style={InfoScreenStyles.text}>Location: {item.location}</Text>
+          <Text style={InfoScreenStyles.text}>Location: {item.date}</Text>
+        </View>
         {longPressedItemId === item.id && (
-          <TouchableOpacity onPress={() => handleDeleteHike(item.id)}>
-            <Text>Delete</Text>
-          </TouchableOpacity>
+          <View style={InfoScreenStyles.buttonContainer}>
+            <TouchableOpacity
+              style={InfoScreenStyles.buttonEdit}
+              onPress={() => {
+                // Navigate to the EditScreen and pass the selected item's data
+                navigation.navigate("EditScreen", { itemToEdit: item });
+              }}
+            >
+              <Text style={InfoScreenStyles.edText}>Edit</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={InfoScreenStyles.buttonDelete}
+              onPress={() => handleDeleteHike(item.id)}
+            >
+              <Text style={InfoScreenStyles.edText}>Delete</Text>
+            </TouchableOpacity>
+          </View>
         )}
-      </View>
+      </ImageBackground>
     </TouchableOpacity>
   );
 
   return (
-    <View>
+    <SafeAreaView style={InfoScreenStyles.listContainer}>
       <FlatList
         data={hikes}
         keyExtractor={(item) => item.id.toString()}
         renderItem={renderHikeCard}
       />
-    </View>
+    </SafeAreaView>
   );
 };
 

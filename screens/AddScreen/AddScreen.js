@@ -1,5 +1,4 @@
 import React, { useMemo, useState } from "react";
-
 import {
   Alert,
   View,
@@ -11,10 +10,9 @@ import {
 import RadioGroup from "react-native-radio-buttons-group";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
-
 import { AddScreenStyles } from "./AddStyles";
 import { strings } from "../../resources/strings";
-
+import { white } from "../../resources/colors";
 import Database from "../../database/Database";
 
 const AddScreen = ({ navigation }) => {
@@ -32,11 +30,15 @@ const AddScreen = ({ navigation }) => {
         id: "1", // acts as primary key, should be unique and non-empty string
         label: "Yes",
         value: "Yes",
+        color: white,
+        labelStyle: { color: "white", fontSize: 18, fontWeight: "bold" },
       },
       {
         id: "2",
         label: "No",
         value: "No",
+        color: white,
+        labelStyle: { color: "white", fontSize: 18, fontWeight: "bold" },
       },
     ],
     []
@@ -60,17 +62,18 @@ const AddScreen = ({ navigation }) => {
     showMode("date");
   };
 
-  //Method to reset add field
-  // const resetAllFields = () => {
-  //   setInputName(""); // Reset the input value to an empty string
-  //   setInputLocation(""); // Reset other input fields as well
-  //   setDate(new Date(1598051730000));
-  //   setSelectedPark("");
-  //   setInputLength("");
-  //   setSelectedLevel("");
-  //   setInputDescription("");
-  // };
-  //Method to add hike
+  // Method to reset add field
+  const resetAllFields = () => {
+    setInputName(""); // Reset the input value to an empty string
+    setInputLocation(""); // Reset other input fields as well
+    setDate(new Date(1598051730000));
+    setSelectedPark("");
+    setInputLength("");
+    setSelectedLevel("");
+    setInputDescription("");
+  };
+
+  // Method to add hike
   const handleAddNewHike = async () => {
     await Database.insertHike(
       inputName.toString(),
@@ -83,6 +86,7 @@ const AddScreen = ({ navigation }) => {
     )
       .then(() => {
         console.log("Hike added successfully");
+        resetAllFields();
         navigation.navigate("Details"); // Navigate back to the previous screen
       })
       .catch((error) => {
@@ -90,21 +94,12 @@ const AddScreen = ({ navigation }) => {
       });
   };
 
-  // const handleTest = () => {
-  //   console.log(
-  //     inputName,
-  //     inputLocation,
-  //     date,
-  //     selectedPark,
-  //     inputLength,
-  //     selectedLevel,
-  //     inputDescription
-  //   );
-  // };
-
   return (
-    <ScrollView automaticallyAdjustKeyboardInsets={true}>
-      <View style={{ flex: 1, padding: 15 }}>
+    <ScrollView
+      automaticallyAdjustKeyboardInsets={true}
+      style={AddScreenStyles.scrollView}
+    >
+      <View style={AddScreenStyles.form}>
         <View style={AddScreenStyles.NLDDGroup}>
           <Text style={AddScreenStyles.labelText}>{strings.field_name}</Text>
           <TextInput
@@ -138,7 +133,7 @@ const AddScreen = ({ navigation }) => {
           </TouchableOpacity>
           <TextInput
             style={AddScreenStyles.NLDDInput}
-            value={date.toLocaleDateString()}
+            value={date.toDateString()}
             onChangeText={setDate}
             editable={false}
           />
@@ -148,6 +143,7 @@ const AddScreen = ({ navigation }) => {
               value={date}
               mode={mode}
               onChange={onChange}
+              style={AddScreenStyles.datePickerModal}
             />
           )}
         </View>
@@ -204,19 +200,12 @@ const AddScreen = ({ navigation }) => {
           />
         </View>
 
-        <View style={AddScreenStyles.buttonGroup}>
-          <TouchableOpacity
-            style={AddScreenStyles.addButton}
-            onPress={handleAddNewHike}
-          >
-            <Text style={AddScreenStyles.addTitle}>{strings.button_add}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={AddScreenStyles.resetButton}>
-            <Text style={AddScreenStyles.resetTitle}>
-              {strings.button_reset}
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          style={AddScreenStyles.addButton}
+          onPress={handleAddNewHike}
+        >
+          <Text style={AddScreenStyles.addTitle}>{strings.button_add}</Text>
+        </TouchableOpacity>
       </View>
     </ScrollView>
   );

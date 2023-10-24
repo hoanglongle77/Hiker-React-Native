@@ -69,27 +69,31 @@ const getAllHikes = () => {
   });
 };
 
-// const updateHike = (hike) => {
-//   return new Promise((resolve, reject) => {
-//     db.transaction((tx) => {
-//       tx.executeSql(
-//         "UPDATE Hikes SET name=?, location=?, date=?, parking=?, length=?, difficulty=?, description=? WHERE id=?",
-//         [
-//           hike.name,
-//           hike.location,
-//           hike.date,
-//           hike.parking,
-//           hike.length,
-//           hike.difficulty,
-//           hike.description,
-//           hike.id,
-//         ],
-//         (_, result) => resolve(result.rowsAffected),
-//         (_, error) => reject(error)
-//       );
-//     });
-//   });
-// };
+const updateHike = (
+  id,
+  name,
+  location,
+  date,
+  parking,
+  length,
+  difficulty,
+  description
+) => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "UPDATE Hikes SET name = ?, location = ?, date = ?, parking = ?, length = ?, difficulty = ?, description = ? WHERE id = ?",
+        [name, location, date, parking, length, difficulty, description, id],
+        () => {
+          resolve();
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+};
 
 const deleteHike = (id) => {
   return new Promise((resolve, reject) => {
@@ -107,27 +111,6 @@ const deleteHike = (id) => {
     });
   });
 };
-
-// const getHikeById = (id) => {
-//   return new Promise((resolve, reject) => {
-//     db.transaction((tx) => {
-//       tx.executeSql(
-//         "SELECT * FROM Hikes WHERE id=?",
-//         [id],
-//         (_, result) => {
-//           if (result.rows.length > 0) {
-//             // Get the first (and hopefully only) result
-//             const hike = result.rows.item(0);
-//             resolve(hike);
-//           } else {
-//             resolve(null); // Hike not found
-//           }
-//         },
-//         (_, error) => reject(error)
-//       );
-//     });
-//   });
-// };
 
 const Database = {
   initDatabase,

@@ -1,13 +1,13 @@
 import { StyleSheet } from "react-native";
 import {
   black,
+  white,
   primaryText,
   secondaryButton,
   warningColor,
-  white,
 } from "../../resources/colors";
 
-export const AddScreenStyles = StyleSheet.create({
+export const EditScreenStyles = StyleSheet.create({
   scrollView: {
     backgroundColor: black,
   },
