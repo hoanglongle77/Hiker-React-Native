@@ -39,6 +39,7 @@ export const AddScreenStyles = StyleSheet.create({
     paddingLeft: 5,
     marginTop: 10,
     fontSize: 15,
+    color: black,
   },
 
   //parking, length, level

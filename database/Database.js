@@ -117,6 +117,7 @@ const Database = {
   insertHike,
   getAllHikes,
   deleteHike,
+  updateHike,
 };
 
 export default Database;

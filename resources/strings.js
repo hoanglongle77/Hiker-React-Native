@@ -10,7 +10,6 @@ export const strings = {
   title_search: "Search",
 
   // Field Names
-  image_description: "Hike Icon",
   field_name: "Name of Hike",
   field_location: "Location",
   field_date: "Touch here to select date",
@@ -18,9 +17,6 @@ export const strings = {
   field_length: "Length of Hike",
   field_difficulty: "Level of Difficulty",
   field_description: "Description (Optional)",
-  field_observation: "Observation",
-  field_observation_time: "Time of Observation",
-  field_comments: "Additional Comments (Optional)",
   parking_yes: "Yes",
   parking_no: "No",
   empty: "",
@@ -32,24 +28,26 @@ export const strings = {
   button_delete: "Delete",
   button_add: "Add new hike",
   button_back: "Back",
-  button_search: "Search",
-  button_reset: "Reset all fields",
 
   // Error Messages
-  error_required_field: "This field is required.",
+  error_required_field: "This field is required",
   error_hike_details_incomplete:
-    "Hike details are incomplete. Please fill in all required fields.",
-  error_no_matching_hike: "No matching hikes found.",
+    "Hike details are incomplete. Please fill in all required fields",
+  error_hike_added: "Error when adding hike",
+  error_hike_updated: "Error when updating hike",
 
   // Success Messages
-  success_hike_saved: "Hike details saved successfully.",
-  success_hike_deleted: "Hike deleted successfully.",
-  success_observation_added: "Observation added successfully.",
+  success_hike_saved: "Hike details saved successfully",
+  success_hike_deleted: "Hike deleted successfully",
+  success_hike_added: "Hike added successfully",
+  title_confirm: "Confirm",
+  title_success: "Success",
+  title_error: "Error",
+  ask: "Do you want to insert this hike ?",
 
   // Hint Strings
   name_hint: "Son Dong",
   length_hint: "10",
-  date_hint: "7/7/2023",
   location_hint: "Quang Binh",
   description_hint: "Discover Son Dong",
 

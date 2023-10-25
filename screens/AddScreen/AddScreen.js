@@ -16,27 +16,31 @@ import { white } from "../../resources/colors";
 import Database from "../../database/Database";
 
 const AddScreen = ({ navigation }) => {
+  // State variables to manage form input and UI state
   const [inputName, setInputName] = useState("");
   const [inputLocation, setInputLocation] = useState("");
-  const [date, setDate] = useState(new Date(1598051730000));
-  const [selectedPark, setSelectedPark] = useState("");
+  const [date, setDate] = useState(new Date());
+  const [selectedParking, setSelectedParking] = useState("");
   const [inputLength, setInputLength] = useState("");
   const [selectedLevel, setSelectedLevel] = useState("");
   const [inputDescription, setInputDescription] = useState("");
 
+  // State variables for managing date picker
+  const [mode, setMode] = useState("date");
+  const [show, setShow] = useState(false);
+
+  // Radio button options for "Yes" or "No" selection
   const radioButtons = useMemo(
     () => [
       {
-        id: "1", // acts as primary key, should be unique and non-empty string
+        id: "Yes", // acts as primary key, should be unique and non-empty string
         label: "Yes",
-        value: "Yes",
         color: white,
         labelStyle: { color: "white", fontSize: 18, fontWeight: "bold" },
       },
       {
-        id: "2",
+        id: "No",
         label: "No",
-        value: "No",
         color: white,
         labelStyle: { color: "white", fontSize: 18, fontWeight: "bold" },
       },
@@ -44,54 +48,76 @@ const AddScreen = ({ navigation }) => {
     []
   );
 
-  const [mode, setMode] = useState("date");
-  const [show, setShow] = useState(false);
-
+  // Function to handle changes in the date picker
   const onChange = (event, selectedDate) => {
     const currentDate = selectedDate;
     setShow(false);
     setDate(currentDate);
   };
 
+  // Function to set the mode and show the date picker
   const showMode = (currentMode) => {
     setShow(true);
     setMode(currentMode);
   };
 
+  // Function to show the date picker
   const showDatepicker = () => {
     showMode("date");
   };
 
-  // Method to reset add field
+  // Function to reset add field
   const resetAllFields = () => {
-    setInputName(""); // Reset the input value to an empty string
-    setInputLocation(""); // Reset other input fields as well
-    setDate(new Date(1598051730000));
-    setSelectedPark("");
+    setInputName("");
+    setInputLocation("");
+    setDate(new Date());
+    setSelectedParking("");
     setInputLength("");
     setSelectedLevel("");
     setInputDescription("");
   };
 
-  // Method to add hike
+  // Function to add hike
   const handleAddNewHike = async () => {
-    await Database.insertHike(
-      inputName.toString(),
-      inputLocation.toString(),
-      date.toString(),
-      selectedPark.toString(),
-      inputLength.toString(),
-      selectedLevel.toString(),
-      inputDescription.toString()
-    )
-      .then(() => {
-        console.log("Hike added successfully");
-        resetAllFields();
-        navigation.navigate("Details"); // Navigate back to the previous screen
-      })
-      .catch((error) => {
-        console.error("Error adding hike:", error);
-      });
+    if (handleFormValidate()) {
+      await Database.insertHike(
+        inputName,
+        inputLocation,
+        date.toDateString(),
+        selectedParking,
+        inputLength,
+        selectedLevel,
+        inputDescription
+      )
+        .then(() => {
+          Alert.alert(strings.title_success, strings.success_hike_added);
+          resetAllFields();
+          navigation.navigate("Details"); // Navigate back to the previous screen
+        })
+        .catch((error) => {
+          Alert.alert(strings.error_hike_added);
+        });
+    } else {
+      Alert.alert(strings.title_error, strings.error_hike_details_incomplete);
+    }
+  };
+
+  // Function to validate form
+  const handleFormValidate = () => {
+    const validateList = [
+      inputName,
+      inputLocation,
+      selectedParking,
+      inputLength,
+      selectedLevel,
+    ];
+
+    for (let index = 0; index < validateList.length; index++) {
+      if (validateList[index] === null || validateList[index] === "") {
+        return false;
+      }
+    }
+    return true;
   };
 
   return (
@@ -152,8 +178,8 @@ const AddScreen = ({ navigation }) => {
           <Text style={AddScreenStyles.labelText}>{strings.field_parking}</Text>
           <RadioGroup
             radioButtons={radioButtons}
-            onPress={setSelectedPark}
-            selectedId={selectedPark}
+            onPress={setSelectedParking}
+            selectedId={selectedParking}
             layout="row"
           />
         </View>

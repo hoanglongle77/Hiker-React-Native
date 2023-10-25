@@ -7,6 +7,7 @@ import AddScreen from "./screens/AddScreen/AddScreen";
 import EditScreen from "./screens/EditScreen/EditScreen";
 import Database from "./database/Database";
 import { navigationBarColor } from "./resources/colors";
+import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 const InfoStack = createStackNavigator();
@@ -21,14 +22,40 @@ export default function App() {
       <Tab.Navigator
         screenOptions={{
           headerStyle: { height: 80 },
-          tabBarStyle: { backgroundColor: navigationBarColor },
+          tabBarStyle: { backgroundColor: navigationBarColor, height: 50 },
           tabBarActiveTintColor: "white",
           tabBarInactiveTintColor: "black",
           tabBarLabelStyle: { fontSize: 15, fontWeight: "bold" },
         }}
       >
-        <Tab.Screen name="Add" component={AddScreen} />
-        <Tab.Screen name="Details" component={InfoStackScreen} />
+        <Tab.Screen
+          name="Add"
+          component={AddScreen}
+          options={{
+            tabBarLabel: "Add",
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons
+                name="add-circle-outline"
+                size={size}
+                color={color}
+              />
+            ),
+            headerTitleAlign: "center",
+          }}
+        />
+        <Tab.Screen
+          name="Details"
+          component={InfoStackScreen}
+          options={{
+            tabBarLabel: "Details",
+            tabBarIcon: ({ color, size }) => (
+              <>
+                <FontAwesome name="list-alt" size={size} color={color} />
+              </>
+            ),
+            headerShown: false,
+          }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
@@ -41,14 +68,18 @@ const InfoStackScreen = () => {
         name="InfoScreen"
         component={InfoScreen}
         options={{
-          headerShown: false,
+          headerShown: true,
+          headerTitle: "Details",
+          headerTitleAlign: "center",
         }}
       />
       <InfoStack.Screen
         name="EditScreen"
         component={EditScreen}
         options={{
-          headerShown: false,
+          headerShown: true,
+          headerTitle: "Edit",
+          headerTitleAlign: "center",
         }}
       />
     </InfoStack.Navigator>

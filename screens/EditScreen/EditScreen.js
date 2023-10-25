@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
+  Alert,
 } from "react-native";
 import RadioGroup from "react-native-radio-buttons-group";
 import { Picker } from "@react-native-picker/picker";
@@ -17,47 +18,26 @@ import Database from "../../database/Database";
 const EditScreen = ({ route, navigation }) => {
   const { itemToEdit } = route.params;
   const [editedData, setEditedData] = useState(itemToEdit);
+  const [selectedParking, setSelectedParking] = useState("");
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
 
-  const radioButtons = useMemo(
-    () => [
-      {
-        id: "1",
-        label: "Yes",
-        value: "Yes",
-        color: white,
-        labelStyle: { color: "white", fontSize: 18, fontWeight: "bold" },
-      },
-      {
-        id: "2",
-        label: "No",
-        value: "No",
-        color: white,
-        labelStyle: { color: "white", fontSize: 18, fontWeight: "bold" },
-      },
-    ],
-    []
-  );
-
-  const handleButtonSave = async () => {
-    await Database.updateHike(
-      editedData.id,
-      editedData.name,
-      editedData.location,
-      editedData.date,
-      editedData.parking,
-      editedData.length,
-      editedData.difficulty,
-      editedData.description
-    )
-      .then(() => {
-        navigation.goBack();
-      })
-      .catch((error) => {
-        console.error("Error updating hike:", error);
-      });
-  };
+  const radioButtons = [
+    {
+      id: "Yes",
+      label: "Yes",
+      color: white,
+      labelStyle: { color: "white", fontSize: 18, fontWeight: "bold" },
+      selected: true,
+    },
+    {
+      id: "No",
+      label: "No",
+      color: white,
+      labelStyle: { color: "white", fontSize: 18, fontWeight: "bold" },
+      selected: true,
+    },
+  ];
 
   const showMode = (currentMode) => {
     setShow(true);
@@ -68,10 +48,47 @@ const EditScreen = ({ route, navigation }) => {
     showMode("date");
   };
 
-  const onRadioChange = (radioButtons) => {
-    const selectedRadio = radioButtons.find((radio) => radio.selected);
-    const selectedPark = selectedRadio ? selectedRadio.value : "";
-    setEditedData({ ...editedData, selectedPark });
+  //Function to handle save
+  const handleButtonSave = async () => {
+    if (handleFormValidate()) {
+      await Database.updateHike(
+        editedData.id,
+        editedData.name,
+        editedData.location,
+        editedData.date,
+        editedData.parking,
+        editedData.length,
+        editedData.difficulty,
+        editedData.description
+      )
+        .then(() => {
+          Alert.alert(strings.title_success, strings.success_hike_saved);
+          navigation.goBack();
+        })
+        .catch((error) => {
+          Alert.alert(strings.error_hike_updated);
+        });
+    } else {
+      Alert.alert(strings.title_error, strings.error_hike_details_incomplete);
+    }
+  };
+
+  // Function to validate form
+  const handleFormValidate = () => {
+    const validateList = [
+      editedData.name,
+      editedData.location,
+      editedData.parking,
+      editedData.length,
+      editedData.difficulty,
+    ];
+
+    for (let index = 0; index < validateList.length; index++) {
+      if (validateList[index] === null || validateList[index] === "") {
+        return false;
+      }
+    }
+    return true;
   };
 
   return (
@@ -127,7 +144,7 @@ const EditScreen = ({ route, navigation }) => {
                 if (selectedDate) {
                   setEditedData({
                     ...editedData,
-                    date: selectedDate.toISOString(),
+                    date: selectedDate.toDateString(),
                   });
                   setShow(false);
                 }
@@ -143,9 +160,11 @@ const EditScreen = ({ route, navigation }) => {
           </Text>
           <RadioGroup
             radioButtons={radioButtons}
-            onPress={onRadioChange}
+            onPress={(selectedParking) =>
+              setEditedData({ ...editedData, parking: selectedParking })
+            }
+            selectedId={editedData.parking}
             layout="row"
-            initialSelected={editedData.parking === "Yes" ? "Yes" : "No"}
           />
         </View>
 
