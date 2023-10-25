@@ -5,6 +5,8 @@ const version = "1.0";
 const displayname = "Hiker App Database";
 const size = 200000;
 
+import { Alert } from "react-native";
+import { strings } from "../resources/strings";
 const db = SQLite.openDatabase(name, version, displayname, size);
 
 const initDatabase = () => {
@@ -21,8 +23,8 @@ const initDatabase = () => {
             description TEXT
           )`,
       [],
-      () => console.log("Database and table created successfully."),
-      (error) => console.log("Error occurred while creating the table.", error)
+      () => Alert.alert(strings.success_create_database),
+      (error) => Alert.alert(strings.error_create_table, error)
     );
   });
 };

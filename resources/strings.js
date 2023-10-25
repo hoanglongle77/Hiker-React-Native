@@ -35,12 +35,13 @@ export const strings = {
     "Hike details are incomplete. Please fill in all required fields",
   error_hike_added: "Error when adding hike",
   error_hike_updated: "Error when updating hike",
-
+  error_create_table: "Error occurred while creating the table",
   // Success Messages
   success_hike_saved: "Hike details saved successfully",
   success_hike_deleted: "Hike deleted successfully",
   success_hike_added: "Hike added successfully",
   success_reset_database: "Database have been reset successfully",
+  success_create_database: "Database and table created successfully.",
 
   title_confirm: "Confirm",
   title_success: "Success",
