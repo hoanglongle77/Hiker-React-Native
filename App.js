@@ -73,8 +73,8 @@ const InfoStackScreen = () => {
           headerTitle: "Details",
           headerTitleAlign: "center",
           headerRight: () => (
-            <TouchableOpacity style={AppStyles.btnDelete}>
-              <Text style={AppStyles.text}>Delete All</Text>
+            <TouchableOpacity>
+              <Text>Delete All</Text>
             </TouchableOpacity>
           ),
         }}
