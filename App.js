@@ -8,6 +8,7 @@ import EditScreen from "./screens/EditScreen/EditScreen";
 import Database from "./database/Database";
 import { navigationBarColor } from "./resources/colors";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
+import { TouchableOpacity, Text } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const InfoStack = createStackNavigator();
@@ -71,6 +72,11 @@ const InfoStackScreen = () => {
           headerShown: true,
           headerTitle: "Details",
           headerTitleAlign: "center",
+          headerRight: () => (
+            <TouchableOpacity style={AppStyles.btnDelete}>
+              <Text style={AppStyles.text}>Delete All</Text>
+            </TouchableOpacity>
+          ),
         }}
       />
       <InfoStack.Screen

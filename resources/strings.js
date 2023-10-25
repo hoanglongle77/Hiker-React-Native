@@ -40,10 +40,11 @@ export const strings = {
   success_hike_saved: "Hike details saved successfully",
   success_hike_deleted: "Hike deleted successfully",
   success_hike_added: "Hike added successfully",
+  success_reset_database: "Database have been reset successfully",
+
   title_confirm: "Confirm",
   title_success: "Success",
   title_error: "Error",
-  ask: "Do you want to insert this hike ?",
 
   // Hint Strings
   name_hint: "Son Dong",

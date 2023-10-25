@@ -112,12 +112,30 @@ const deleteHike = (id) => {
   });
 };
 
+const deleteAll = () => {
+  return new Promise((resolve, reject) => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        "DELETE FROM Hikes",
+        [],
+        () => {
+          resolve();
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
 const Database = {
   initDatabase,
   insertHike,
   getAllHikes,
   deleteHike,
   updateHike,
+  deleteAll,
 };
 
 export default Database;

@@ -28,6 +28,22 @@ const InfoScreen = ({ navigation }) => {
   // State variable to store the ID of an item that has been long-pressed
   const [longPressedItemId, setLongPressedItemId] = useState(null);
 
+  // Initialize button to delete all hikes on to the header
+  React.useEffect(() => {
+    navigation.setOptions({
+      headerRightContainerStyle: { marginRight: 15 },
+      headerLeftContainerStyle: { marginLeft: 15 },
+      headerRight: () => (
+        <TouchableOpacity
+          onPress={handleDeleteAllHikes}
+          style={InfoScreenStyles.btnDeleteAll}
+        >
+          <Text style={InfoScreenStyles.textDeleteAll}>Delete All</Text>
+        </TouchableOpacity>
+      ),
+    });
+  }, [navigation]);
+
   // Fetch data from database
   useEffect(() => {
     const fetchHikes = async () => {
@@ -41,6 +57,13 @@ const InfoScreen = ({ navigation }) => {
 
     fetchHikes();
   }, [isFocused]);
+
+  const handleDeleteAllHikes = async () => {
+    await Database.deleteAll();
+    const data = await Database.getAllHikes();
+    Alert.alert(strings.title_success, strings.success_reset_database);
+    setHikes(data);
+  };
 
   // Function to delete hike
   const handleDeleteHike = async (id) => {
