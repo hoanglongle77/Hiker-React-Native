@@ -17,5 +17,7 @@ delete individual hikes and delete all the details from the database.
 
 c) Screenshots:
 ![Screenshot_20231026-025957_Expo Go](https://github.com/hoanglongle77/Hiker-React-Native/assets/100249743/7c1c072f-c4cc-4e65-9572-5ad5920fef0f)
+
 ![Screenshot_20231026-025952_Expo Go](https://github.com/hoanglongle77/Hiker-React-Native/assets/100249743/cb404a17-74e3-43e8-850a-a834294fd654)
+
 ![Screenshot_20231026-022330_Expo Go](https://github.com/hoanglongle77/Hiker-React-Native/assets/100249743/670b0813-d32d-4b70-b82c-73ff11955571)
