@@ -31,8 +31,8 @@ const InfoScreen = ({ navigation }) => {
   // Initialize button to delete all hikes on to the header
   React.useEffect(() => {
     navigation.setOptions({
-      headerRightContainerStyle: { marginRight: 15 },
-      headerLeftContainerStyle: { marginLeft: 15 },
+      headerRightContainerStyle: { marginRight: 10 },
+      headerLeftContainerStyle: { marginLeft: 10 },
       headerRight: () => (
         <TouchableOpacity
           onPress={handleDeleteAllHikes}

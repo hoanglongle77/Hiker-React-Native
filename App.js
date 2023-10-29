@@ -23,7 +23,7 @@ export default function App() {
       <Tab.Navigator
         screenOptions={{
           headerStyle: { height: 80 },
-          tabBarStyle: { backgroundColor: navigationBarColor, height: 50 },
+          tabBarStyle: { backgroundColor: navigationBarColor },
           tabBarActiveTintColor: "white",
           tabBarInactiveTintColor: "black",
           tabBarLabelStyle: { fontSize: 15, fontWeight: "bold" },

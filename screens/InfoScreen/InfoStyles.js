@@ -62,6 +62,11 @@ export const InfoScreenStyles = StyleSheet.create({
     fontWeight: "bold",
   },
 
-  textDeleteAll: { fontSize: 15 },
-  btnDeleteAll: { backgroundColor: warningColor, padding: 5, borderRadius: 5 },
+  textDeleteAll: { fontSize: 15, fontWeight: "bold" },
+  btnDeleteAll: {
+    backgroundColor: warningColor,
+    padding: 5,
+    borderRadius: 5,
+    marginRight: 10,
+  },
 });
