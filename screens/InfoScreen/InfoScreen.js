@@ -42,7 +42,7 @@ const InfoScreen = ({ navigation }) => {
         </TouchableOpacity>
       ),
     });
-  }, [navigation]);
+  }, []);
 
   // Fetch data from database
   useEffect(() => {

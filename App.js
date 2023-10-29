@@ -72,11 +72,6 @@ const InfoStackScreen = () => {
           headerShown: true,
           headerTitle: "Details",
           headerTitleAlign: "center",
-          headerRight: () => (
-            <TouchableOpacity>
-              <Text>Delete All</Text>
-            </TouchableOpacity>
-          ),
         }}
       />
       <InfoStack.Screen
