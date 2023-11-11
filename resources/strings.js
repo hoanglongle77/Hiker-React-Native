@@ -42,6 +42,7 @@ export const strings = {
   success_hike_added: "Hike added successfully",
   success_reset_database: "Database have been reset successfully",
   success_create_database: "Database and table created successfully.",
+  confirm_delete_hike: "Do you want to delete this hike",
 
   title_confirm: "Confirm",
   title_success: "Success",

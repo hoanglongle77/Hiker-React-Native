@@ -8,7 +8,6 @@ import EditScreen from "./screens/EditScreen/EditScreen";
 import Database from "./database/Database";
 import { navigationBarColor } from "./resources/colors";
 import { MaterialIcons, FontAwesome } from "@expo/vector-icons";
-import { TouchableOpacity, Text } from "react-native";
 
 const Tab = createBottomTabNavigator();
 const InfoStack = createStackNavigator();
@@ -22,7 +21,7 @@ export default function App() {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={{
-          headerStyle: { height: 80 },
+          headerStyle: { height: 70 },
           tabBarStyle: { backgroundColor: navigationBarColor },
           tabBarActiveTintColor: "white",
           tabBarInactiveTintColor: "black",

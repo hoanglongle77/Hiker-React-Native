@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -10,6 +10,7 @@ import {
 import RadioGroup from "react-native-radio-buttons-group";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
+
 import { EditScreenStyles } from "./EditStyles";
 import { strings } from "../../resources/strings";
 import { white } from "../../resources/colors";

@@ -67,10 +67,31 @@ const InfoScreen = ({ navigation }) => {
 
   // Function to delete hike
   const handleDeleteHike = async (id) => {
-    await Database.deleteHike(id);
-    const data = await Database.getAllHikes();
-    Alert.alert(strings.title_success, strings.success_hike_deleted);
-    setHikes(data);
+    // Display confirmation alert
+    Alert.alert(
+      strings.title_confirm,
+      strings.confirm_delete_hike,
+      [
+        {
+          text: strings.button_cancel,
+          style: "cancel",
+        },
+        {
+          text: strings.button_delete,
+          onPress: async () => {
+            try {
+              await Database.deleteHike(id);
+              const data = await Database.getAllHikes();
+              Alert.alert(strings.title_success, strings.success_hike_deleted);
+              setHikes(data);
+            } catch (error) {
+              Alert.alert(error);
+            }
+          },
+        },
+      ],
+      { cancelable: false }
+    );
   };
 
   // Function to render hike card

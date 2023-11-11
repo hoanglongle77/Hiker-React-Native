@@ -7,13 +7,15 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import RadioGroup from "react-native-radio-buttons-group";
+import RadioGroup, { RadioButton } from "react-native-radio-buttons-group";
 import { Picker } from "@react-native-picker/picker";
 import DateTimePicker from "@react-native-community/datetimepicker";
+
 import { AddScreenStyles } from "./AddStyles";
 import { strings } from "../../resources/strings";
 import { white } from "../../resources/colors";
 import Database from "../../database/Database";
+import RadioButtonsGroup from "react-native-radio-buttons-group";
 
 const AddScreen = ({ navigation }) => {
   // State variables to manage form input and UI state
@@ -80,23 +82,51 @@ const AddScreen = ({ navigation }) => {
   // Function to add hike
   const handleAddNewHike = async () => {
     if (handleFormValidate()) {
-      await Database.insertHike(
-        inputName,
-        inputLocation,
-        date.toDateString(),
-        selectedParking,
-        inputLength,
-        selectedLevel,
-        inputDescription
-      )
-        .then(() => {
-          Alert.alert(strings.title_success, strings.success_hike_added);
-          resetAllFields();
-          navigation.navigate("Details"); // Navigate back to the previous screen
-        })
-        .catch((error) => {
-          Alert.alert(strings.error_hike_added);
-        });
+      // Prepare the details message for confirmation
+      const confirmationMessage = `
+        Name: ${inputName}
+        Location: ${inputLocation}
+        Date: ${date.toDateString()}
+        Parking: ${selectedParking}
+        Length: ${inputLength}
+        Level: ${selectedLevel}
+        Description: ${inputDescription}
+      `;
+
+      // Display confirmation alert
+      Alert.alert(
+        strings.title_confirm,
+        confirmationMessage,
+        [
+          {
+            text: strings.button_cancel,
+            style: "cancel",
+          },
+          {
+            text: strings.button_add,
+            onPress: async () => {
+              try {
+                await Database.insertHike(
+                  inputName,
+                  inputLocation,
+                  date.toDateString(),
+                  selectedParking,
+                  inputLength,
+                  selectedLevel,
+                  inputDescription
+                );
+
+                Alert.alert(strings.title_success, strings.success_hike_added);
+                resetAllFields();
+                navigation.navigate("Details");
+              } catch (error) {
+                Alert.alert(error);
+              }
+            },
+          },
+        ],
+        { cancelable: false }
+      );
     } else {
       Alert.alert(strings.title_error, strings.error_hike_details_incomplete);
     }
